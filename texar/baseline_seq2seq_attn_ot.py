@@ -216,7 +216,7 @@ def main() -> None:
     train_op = tx.core.get_train_op(
         params=model.parameters(), hparams=config_model.opt)
 
-    def _train_epoch(epoch: int):
+    def _train_epoch(epoch: int) -> None:
         data_iterator.switch_to_train_data()
         model.train()
 
