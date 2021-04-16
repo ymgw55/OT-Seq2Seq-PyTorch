@@ -1,0 +1,4 @@
+argparse==1.1
+rouge==0.2.1
+texar-pytorch==0.1.2.post1
+wandb==0.10.26
