@@ -148,7 +148,7 @@ class Seq2SeqAttnOT(nn.Module):
             cosine_cost = 1 - torch.einsum(
                 'aij,ajk->aik',
                 F.normalize(self.source_embedder(
-                            batch['source_text_ids']), dim=-1, p=2),
+                            batch['target_text_ids']), dim=-1, p=2),
                 torch.transpose(
                     F.normalize(
                         self.target_embedder(
