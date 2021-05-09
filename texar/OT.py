@@ -3,8 +3,8 @@ from torch import Tensor
 
 
 def ipot_distance(C: Tensor,
-                   device,
-                   beta=1, t_steps=10, k_steps=1) -> Tensor:
+                  device,
+                  beta=1, t_steps=10, k_steps=1) -> Tensor:
     b, n, m = C.shape
     sigma = (torch.ones([b, m, 1]) / m).to(device)  # [b, m, 1]
     T = torch.ones([b, n, m]).to(device)
