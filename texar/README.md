@@ -72,11 +72,11 @@ Here:
 ### Machine Translation
 | Model      | BLEU Score   |
 | -----------| -------|
-| MLE        | 25.42 |
-| MLE + OT |  25.95 |
+| MLE        | 25.91 |
+| MLE + OT |  26.23 |
 
 ### Text Summarization (F1 score)
 | Model      | Rouge-1   | Rouge-2 | Rouge-L |
 | -----------| -------|-------|-------|
-| MLE        | 34.64  | 15.94 | 30.93 |
-| MLE + OT | 35.23 | 16.24 | 31.44 |
+| MLE        | 34.64  | 15.57 | 30.93 |
+| MLE + OT | 35.10 | 15.81 | 31.27 |
