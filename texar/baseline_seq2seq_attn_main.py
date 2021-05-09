@@ -200,21 +200,22 @@ def main() -> None:
     train_op = tx.core.get_train_op(
         params=model.parameters(), hparams=config_model.opt)
 
-    def _train_epoch(epoch: int) -> None:
+    def _train_epoch(epoch: int, step: int) -> int:
         data_iterator.switch_to_train_data()
         model.train()
 
-        step = 0
         for batch in data_iterator:
             loss = model(batch, mode="train")
             loss.backward()
             train_op()
             if step % config_data.display == 0:
-                wandb.log({'train/train_loss': loss.item()})
+                wandb.log({'train/train_loss': loss.item()}, step=step)
                 logger.info(f'epoch: {epoch}'
-                            f' | step: {step} / {len(data_iterator._datasets["train"])}'
+                            f' | step: {step}'
+                            f' / {len(data_iterator._datasets["train"])}'
                             f' | loss: {loss:.4f}')
             step += 1
+        return step
 
     @torch.no_grad()
     def _eval_epoch(mode: str) -> None:
@@ -259,9 +260,10 @@ def main() -> None:
             return 100*sum([value['f'] for value in score.values()])
 
     best_val_score = -1.
+    step = 0
     for epoch in range(config_data.num_epochs):
         logger.info(f'Epoch: {epoch}')
-        _train_epoch(epoch)
+        step = _train_epoch(epoch, step)
 
         val_score = _eval_epoch('val')
         test_score = _eval_epoch('test')

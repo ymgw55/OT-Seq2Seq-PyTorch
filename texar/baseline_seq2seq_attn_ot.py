@@ -181,14 +181,14 @@ def main() -> None:
     args = get_args()
     project_name = f'{args.project_name}'
     data_name = Path(args.config_data).suffix[1:]
-    exp_name = 'baseline'
+    exp_name = 'baseline+OT'
     if 'iwslt14' in data_name:
         exp_name += '/iwslt14'
     elif 'giga' in data_name:
         exp_name += '/giga'
 
     config_data: Any = importlib.import_module(args.config_data)
-    tags = [config_data.eval_metric, 'baseline']
+    tags = [config_data.eval_metric, 'OT']
 
     wandb.init(project=project_name,
                name=exp_name,
@@ -216,21 +216,22 @@ def main() -> None:
     train_op = tx.core.get_train_op(
         params=model.parameters(), hparams=config_model.opt)
 
-    def _train_epoch(epoch: int) -> None:
+    def _train_epoch(epoch: int, step: int) -> int:
         data_iterator.switch_to_train_data()
         model.train()
 
-        step = 0
         for batch in data_iterator:
             loss = model(batch, mode="train")
             loss.backward()
             train_op()
             if step % config_data.display == 0:
-                wandb.log({'train/train_loss': loss.item()})
+                wandb.log({'train/train_loss': loss.item()}, step=step)
                 logger.info(f'epoch: {epoch}'
-                            f' | step: {step} / {len(data_iterator._datasets["train"])}'
+                            f' | step: {step}'
+                            f' / {len(data_iterator._datasets["train"])}'
                             f' | loss: {loss:.4f}')
             step += 1
+        return step
 
     @torch.no_grad()
     def _eval_epoch(mode: str) -> None:
@@ -275,9 +276,10 @@ def main() -> None:
             return 100*sum([value['f'] for value in score.values()])
 
     best_val_score = -1.
+    step = 0
     for epoch in range(config_data.num_epochs):
         logger.info(f'Epoch: {epoch}')
-        _train_epoch(epoch)
+        step = _train_epoch(epoch, step)
 
         val_score = _eval_epoch('val')
         test_score = _eval_epoch('test')
