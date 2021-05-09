@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-num_epochs = 20 # the best epoch occurs within 10 epochs in most cases
+num_epochs = 10 # the best epoch occurs within 10 epochs in most cases
 display = 100
 
 eval_metric = 'bleu'

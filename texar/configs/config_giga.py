@@ -1,4 +1,4 @@
-num_epochs = 20
+num_epochs = 10
 display = 100
 
 eval_metric = 'rouge'
