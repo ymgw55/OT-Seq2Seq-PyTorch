@@ -1,6 +1,6 @@
 # OT-Seq2Seq-PyTorch
 
-This repository is an unofficial PyTorch implementation of CLR 2019 paper [IMPROVING SEQUENCE-TO-SEQUENCE LEARNING
+This repository is an unofficial PyTorch implementation of ICLR 2019 paper [IMPROVING SEQUENCE-TO-SEQUENCE LEARNING
 VIA OPTIMAL TRANSPORT](https://arxiv.org/pdf/1901.06283.pdf)
 
 Official TensorFlow implementation is [here](https://github.com/LiqunChen0606/OT-Seq2Seq).
